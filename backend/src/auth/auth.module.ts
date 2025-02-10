@@ -30,5 +30,6 @@ import { LoginDto } from './dto/login.dto';
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, RegisterDto,LoginDto],
+  
 })
 export class AuthModule {}
