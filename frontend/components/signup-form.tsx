@@ -32,7 +32,7 @@ export function SignUpForm({
         title: "Account created successfully",
         description: "You can now login to your account",
       });
-      router.push("/login");
+      router.push("/dashboard");
     },
     async onError(error:any) {
       console.error("Error creating account:", error);
@@ -108,7 +108,7 @@ export function SignUpForm({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="influencer">Influencer</SelectItem>
-              <SelectItem value="Brand">Brand</SelectItem>
+              <SelectItem value="brand">Brand</SelectItem>
             </SelectContent>
           </Select>
         </div>

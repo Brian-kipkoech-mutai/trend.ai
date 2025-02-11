@@ -2,23 +2,20 @@ import { useState, ChangeEvent } from "react";
 
 interface FormData {
   name?: string;
-  password: string;
+  password?: string;
   role?: string;
-  email: string;
+  email?: string;
   startDate?: Date;
   endDate?: Date;
- 
+  description?: string;
+  contentLink?: string;
+  // Add other fields as needed
 }
 
-const useFormData = () => {
-  const [formData, setFormData] = useState<FormData>({
-    name: "",
-    password: "",
-    role: "",
-    email: "",
-  });
+const useFormData = (initialState: FormData = {}) => {
+  const [formData, setFormData] = useState<FormData>(initialState);
 
-  const handleChange = ({ target }: ChangeEvent<HTMLInputElement> |ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChange = ({ target }: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = target;
     setFormData({
       ...formData,

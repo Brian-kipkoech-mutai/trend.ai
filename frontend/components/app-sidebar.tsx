@@ -45,7 +45,7 @@ const data = {
     alt: "org picture",
   },
 
-  navMain: [
+  navMainbrand: [
     {
       title: "Campaign",
       url: "#",
@@ -54,12 +54,12 @@ const data = {
       items: [
         {
           title: "Create Campaign",
-          url: "dashboard/campaign/create",
+          url: "/dashboard/campaign/create",
         },
 
         {
           title: "Campaign List",
-          url: "dashboard/campaign-list",
+          url: "/dashboard/campaign/campaign-list",
         },
       ],
     },
@@ -71,11 +71,34 @@ const data = {
       items: [
         {
           title: "Influencer Management ",
-          url: "dashboard/influencer-managment",
+          url: "/dashboard/influencer-managment",
         },
       ],
     },
   ],
+  navMainInfluencer: [
+    {
+      title: "Campaign",
+      url: "#",
+      icon: SquareTerminal,
+      isActive: true,
+      items: [
+        {
+          title: "Campaign List",
+          url: "/dashboard/campaign/campaign-list", // Page that lists all campaigns
+        },
+        {
+          title: "My Campaigns",
+          url: "/dashboard/campaign/my-campaigns", // Displays the campaigns the influencer has joined
+        },
+        {
+          title: "Submission Status",
+          url: "/dashboard/campaign/submission-status", // Page to view the status of submitted content
+        },
+      ],
+    },
+  ],
+
   projects: [
     {
       name: "Design Engineering",
@@ -98,6 +121,7 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const userContext = useUser();
   const user = userContext?.user;
+  const role = user?.role;
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -105,7 +129,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavOragnization organization={data.organization} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain
+          items={role == "brand" ? data.navMainbrand : data.navMainInfluencer}
+        />
       </SidebarContent>
       <SidebarFooter>{user && <NavUser user={user} />}</SidebarFooter>
       <SidebarRail />

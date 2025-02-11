@@ -1,4 +1,4 @@
-  'use client'
+"use client";
 import React from "react";
 import {
   Card,
@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
- import { Textarea } from "@/components/ui/textarea"
+import { Textarea } from "@/components/ui/textarea";
 import useFormData from "@/hooks/useFormData";
 import { DateRange } from "react-day-picker";
 import { DatePickerWithRange } from "@/components/ragePicker";
@@ -18,14 +18,17 @@ import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 import { createCampaign } from "@/services/campaignServices";
-  
+
 const CreateCampaignPage: React.FC = () => {
-
-
-  const { formData, handleChange, setFormData } = useFormData();
-  const { mutate } = useMutation({
+  const { formData, handleChange, setFormData } = useFormData({
+    name: "",
+    description: "",
+    startDate: undefined,
+    endDate: undefined,
+  });
+  const { mutate ,isPending} = useMutation({
     mutationKey: ["submitCampaign"],
-    mutationFn: createCampaign,
+    mutationFn: () => createCampaign(formData),
     onSuccess: () => {
       toast({
         title: ` Campaign ${formData.name} submmited successfully`,
@@ -37,9 +40,11 @@ const CreateCampaignPage: React.FC = () => {
       });
     },
   });
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-    };
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("handle  submit  called!");
+    mutate();
+  };
   const onDateChange = (date: DateRange | undefined) => {
     const { from: startDate, to: endDate } = date || {};
 
@@ -50,8 +55,8 @@ const CreateCampaignPage: React.FC = () => {
     });
   };
   return (
-    <div className=" flex justify-content-cent">
-      <Card>
+    <div className=" flex justify-center md:justify-start ">
+      <Card className="w-full lg:max-w-screen-md">
         <CardHeader>
           <CardTitle>Create campaign</CardTitle>
           <CardDescription></CardDescription>
@@ -70,24 +75,29 @@ const CreateCampaignPage: React.FC = () => {
                 placeholder="Name of your project"
                 onChange={handleChange}
                 required={true}
+                name="name"
               />
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="name"> Campaign Description</Label>
-              <Textarea name="describe  your event" onChange={handleChange} required={true} />
+              <Textarea
+                name="description"
+                onChange={handleChange}
+                required={true}
+              />
             </div>
 
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="name">Date Rage</Label>
-              <DatePickerWithRange onDateChange={onDateChange}   />
+              <DatePickerWithRange onDateChange={onDateChange} />
+            </div>
+            <div className=" space-y-1.5 w-full">
+              <Button type="submit" className="w-full" disabled={isPending}>
+                submit
+              </Button>
             </div>
           </form>
         </CardContent>
-        <CardFooter>
-          <div className=" space-y-1.5 w-full">
-            <Button type="submit" className="w-full">submit</Button>
-          </div>
-        </CardFooter>
       </Card>
     </div>
   );

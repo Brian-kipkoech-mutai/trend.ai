@@ -10,21 +10,27 @@ import { userLogin } from "@/services/auth-service";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
+ 
+
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"form">) {
-  const { handleChange, formData } = useFormData();
-  const { toast } = useToast()
-  const router=useRouter()
+  const { handleChange, formData } = useFormData({
+    email: "",
+    password: "",
+  });
+  const { toast } = useToast();
+  const router = useRouter();
+  const { password, email } = formData;
   const { mutate, isPending, isError } = useMutation({
     mutationKey: ["login"],
-    mutationFn: () => userLogin(formData),
-    onError: (error :any, variables, context) => {
+    mutationFn: () =>    userLogin({ email, password }),
+    onError: (error: any, variables, context) => {
       // An error happened!
-      console.log(error.message)
+      console.log(error.message);
       toast({
-        title: error?.response?.data?.message|| "Login failed",
+        title: error?.response?.data?.message || "Login failed",
         description: "An error occurred while logging in",
       });
     },
@@ -34,14 +40,14 @@ export function LoginForm({
         title: "Login successful",
         description: "You have successfully logged in",
       });
-      router.push("/dashboard")
+      router.replace("/dashboard");
     },
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission logic here
-      mutate()
+    mutate();
   };
 
   return (
