@@ -11,17 +11,27 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         (request) => {
           let token = null;
           if (request && request.cookies) {
-            token = request.cookies['accessToken'];
+            token = token = request.signedCookies
+              ? request.signedCookies['accessToken']
+              : null;
           }
           return token;
         },
       ]),
       ignoreExpiration: false,
-      secretOrKey: configService.get<string>('jwtSecret') || 'default_secret_key',
+      secretOrKey:
+        configService.get<string>('appConfig.jwtSecret') ||
+        process.env.JWT_SECRET ||
+        '',
     });
   }
 
   async validate(payload: any) {
-    return { userId: payload.sub, username: payload.username };
+    return {
+      id: payload.id,
+      name: payload.name,
+      role: payload.role,
+      email: payload.email,
+    };
   }
 }

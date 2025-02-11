@@ -3,7 +3,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { InfluencerSchema } from 'src/database/schemas/influencer.schema';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './strategies/jwt.strategy';
@@ -29,7 +29,7 @@ import { LoginDto } from './dto/login.dto';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, RegisterDto,LoginDto],
-  
+  providers: [AuthService, JwtStrategy, RegisterDto, LoginDto, ],
+  exports: [JwtStrategy,PassportModule]
 })
 export class AuthModule {}

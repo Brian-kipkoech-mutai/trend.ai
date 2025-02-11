@@ -1,12 +1,13 @@
- // src/influencers/schemas/influencer.schema.ts
+// src/influencers/schemas/influencer.schema.ts
 import { Document, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as argon2 from 'argon2';
 
 // Define a type that includes your custom method
-export type InfluencerDocument = Influencer & Document & {
-  comparePassword(candidatePassword: string): Promise<boolean>;
-};
+export type InfluencerDocument = Influencer &
+  Document & {
+    comparePassword(candidatePassword: string): Promise<boolean>;
+  };
 
 @Schema({ timestamps: true })
 export class Influencer {
@@ -16,9 +17,6 @@ export class Influencer {
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop({ unique: true })
-  socialMediaHandle: string;
-
   @Prop({ default: 0 })
   followerCount: number;
 
@@ -27,6 +25,9 @@ export class Influencer {
 
   @Prop()
   niche: string;
+  @Prop()
+    
+  socialMediaHandle: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Campaign' }] })
   campaigns: Types.ObjectId[];

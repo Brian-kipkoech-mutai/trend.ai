@@ -14,6 +14,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Response, Request } from 'express';
 import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -33,7 +34,7 @@ export class AuthController {
     @Res() res: Response,
   ): Promise<void> {
     console.log('route pinged');
-    const { email, role } = registerDto;
+    const { email, role ,name} = registerDto;
 
     // Check if user already exists in either brand or influencer schema
     const userExists = await this.authService.checkUserExists(email);
@@ -42,8 +43,9 @@ export class AuthController {
     }
 
     // Proceed with registration
+    console.log('registerDto', registerDto);
     const id = await this.authService.register(registerDto);
-    const payload = { email, role, id };
+    const payload = { email, role, id, name };
     const accessToken = this.jwtService.sign(payload);
 
     // Set the access token as a signed cookie
@@ -59,11 +61,15 @@ export class AuthController {
 
     // Check if user exists in influencer schema
     let user = await this.authService.findInfluencerByEmail(email);
-    user.role = 'influencer';
-    if (!user) {
+    if (user) {
+       user.role = 'influencer';
+     }
+    else if (!user) {
       // If not found, check in brand schema
       user = await this.authService.findBrandByEmail(email);
-      user.role = 'brand';
+      if (user) {
+        user.role = 'brand';
+      }
     }
 
     if (!user) {
@@ -81,6 +87,7 @@ export class AuthController {
     }
 
     const { id, role, name } = user;
+    console.log('mongouser',user)
     const payload = { email, id, role, name };
     const accessToken = this.jwtService.sign(payload);
 
@@ -90,7 +97,7 @@ export class AuthController {
   }
 
   @Get('user')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard('jwt'))
   getUser(@Req() req: Request, @Res() res: Response) {
     interface User {
       name: string;
@@ -99,6 +106,7 @@ export class AuthController {
       id: string;
     }
     const user = req.user as User;
+    console.log('userrrrr', user);
     if (!user) {
       return res.status(400).send('User not found');
     }

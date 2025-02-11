@@ -12,4 +12,6 @@ export class CampaignDto {
 
   @IsString()
   description: string;
+
+  brandId: string;
 }
