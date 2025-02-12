@@ -3,8 +3,11 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
-    domains: ['www.trendai.app'],
-    },
+    remotePatterns: [
+      { protocol: "https", hostname: "www.trendai.app" },
+      { protocol: "https", hostname: "cdn.dribbble.com" },
+    ],
+  },
 };
 
 export default nextConfig;
