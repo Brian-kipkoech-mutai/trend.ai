@@ -1,25 +1,26 @@
- // src/brands/schemas/brand.schema.ts
+// src/brands/schemas/brand.schema.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, CallbackError } from 'mongoose';
 import * as argon2 from 'argon2';
 
-export type BrandDocument = Brand & Document & {
-  comparePassword(candidatePassword: string): Promise<boolean>;
-};
+export type BrandDocument = Brand &
+  Document & {
+    comparePassword(candidatePassword: string): Promise<boolean>;
+  };
 
 @Schema()
-export class Brand {
+export class Brand extends Document {
   @Prop({ required: true, unique: true })
-  email: string;
+  email!: string;
 
   @Prop({ required: true })
-  password: string;
+  password!: string;
 
   @Prop({ required: true })
-  name: string;
+  name!: string;
 
   @Prop()
-  description: string;
+  description!: string;
 }
 
 export const BrandSchema = SchemaFactory.createForClass(Brand);
@@ -32,7 +33,7 @@ BrandSchema.pre<BrandDocument>('save', async function (next) {
     this.password = await argon2.hash(this.password);
     next();
   } catch (err) {
-    next(err);
+    next(err as CallbackError);
   }
 });
 

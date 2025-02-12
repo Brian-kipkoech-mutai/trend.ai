@@ -12,25 +12,25 @@ export type InfluencerDocument = Influencer &
 @Schema({ timestamps: true })
 export class Influencer {
   @Prop({ required: true })
-  name: string;
+  name!: string;
 
   @Prop({ required: true, unique: true })
-  email: string;
+  email!: string;
 
   @Prop({ default: 0 })
-  followerCount: number;
+  followerCount!: number;
 
   @Prop({ required: true, select: false })
-  password: string;
+  password!: string;
 
   @Prop()
-  niche: string;
+  niche!: string;
+
   @Prop()
-    
-  socialMediaHandle: string;
+  socialMediaHandle!: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Campaign' }] })
-  campaigns: Types.ObjectId[];
+  campaigns!: Types.ObjectId[];
 }
 
 // Create the schema using SchemaFactory

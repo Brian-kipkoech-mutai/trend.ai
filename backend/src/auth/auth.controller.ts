@@ -34,7 +34,7 @@ export class AuthController {
     @Res() res: Response,
   ): Promise<void> {
     console.log('route pinged');
-    const { email, role ,name} = registerDto;
+    const { email, role, name } = registerDto;
 
     // Check if user already exists in either brand or influencer schema
     const userExists = await this.authService.checkUserExists(email);
@@ -62,9 +62,8 @@ export class AuthController {
     // Check if user exists in influencer schema
     let user = await this.authService.findInfluencerByEmail(email);
     if (user) {
-       user.role = 'influencer';
-     }
-    else if (!user) {
+      user.role = 'influencer';
+    } else if (!user) {
       // If not found, check in brand schema
       user = await this.authService.findBrandByEmail(email);
       if (user) {
@@ -87,7 +86,7 @@ export class AuthController {
     }
 
     const { id, role, name } = user;
-    console.log('mongouser',user)
+    console.log('mongouser', user);
     const payload = { email, id, role, name };
     const accessToken = this.jwtService.sign(payload);
 

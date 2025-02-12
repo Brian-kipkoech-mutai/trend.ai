@@ -29,7 +29,7 @@ import { LoginDto } from './dto/login.dto';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, RegisterDto, LoginDto, ],
-  exports: [JwtStrategy,PassportModule]
+  providers: [AuthService, JwtStrategy, RegisterDto, LoginDto],
+  exports: [JwtStrategy, PassportModule],
 })
 export class AuthModule {}

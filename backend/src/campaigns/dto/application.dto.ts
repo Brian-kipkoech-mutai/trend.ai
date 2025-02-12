@@ -1,9 +1,11 @@
-import { IsString } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 
 export class ApplicationDto {
   @IsString()
-  campaignId: string;
+  @IsNotEmpty()
+  campaignId!: string;
 
   @IsString()
-  contentLink: string;
+  @IsNotEmpty()
+  contentLink!: string;
 }

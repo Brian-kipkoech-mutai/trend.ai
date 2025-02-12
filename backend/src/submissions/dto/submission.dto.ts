@@ -2,7 +2,7 @@ import { IsString } from 'class-validator';
 
 export class SubmissionDto {
   @IsString()
-  contentLink: string;
+  contentLink!: string;
   @IsString()
-  campaignId: string;
+  campaignId!: string;
 }

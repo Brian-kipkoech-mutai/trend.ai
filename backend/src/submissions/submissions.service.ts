@@ -33,7 +33,7 @@ export class SubmissionsService {
   async getAllSubmissions(): Promise<Submission[] | null> {
     return this.submissionModel
       .find(
-        { status: { $nin: ['approved', 'rejected'] } }, 
+        { status: { $nin: ['approved', 'rejected'] } },
         'createdAt  contentLink',
       )
       .populate('campaignId', 'name')

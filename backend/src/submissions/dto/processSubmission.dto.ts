@@ -1,8 +1,11 @@
-import { IsString } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 
 export class ProcessSubmissionDto {
   @IsString()
-  id: string;
+  @IsNotEmpty()
+  id!: string;
+
   @IsString()
-  action: string;
+  @IsNotEmpty()
+  action!: string;
 }

@@ -1,25 +1,22 @@
 // src/campaigns/schemas/campaign.schema.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-@Schema({timestamps:true})
+@Schema({ timestamps: true })
 export class Campaign extends Document {
-  @Prop({ required: true , unique: true})
-  name: string;
+  @Prop({ required: true, unique: true })
+  name!: string;
 
   @Prop({ required: true })
-  description: string;
+  description!: string;
 
   @Prop({ required: true })
-  startDate: Date;
+  startDate!: Date;
 
   @Prop({ required: true })
-  endDate: Date;
-  
+  endDate!: Date;
+
   @Prop({ required: true, type: Types.ObjectId, ref: 'Brand' })
-  brandId: string;
+  brandId!: string;
 }
 
 export const CampaignSchema = SchemaFactory.createForClass(Campaign);
- 
-
-  

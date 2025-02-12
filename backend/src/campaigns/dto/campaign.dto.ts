@@ -1,17 +1,21 @@
-import { IsString, IsDate } from 'class-validator';
+import { IsString, IsNotEmpty, IsDate } from 'class-validator';
 
 export class CampaignDto {
   @IsDate()
-  startDate: Date;
+  startDate!: Date;
 
   @IsDate()
-  endDate: Date;
+  endDate!: Date;
 
   @IsString()
-  name: string;
+  @IsNotEmpty()
+  name!: string;
 
   @IsString()
-  description: string;
+  @IsNotEmpty()
+  description!: string;
 
-  brandId: string;
+  @IsString()
+  @IsNotEmpty()
+  brandId!: string;
 }
