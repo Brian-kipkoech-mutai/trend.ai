@@ -1,11 +1,10 @@
-import { ValidationPipe } from '@nestjs/common';
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
-import serverlessExpress from '@vendia/serverless-express';
-import { Callback, Context, Handler } from 'aws-lambda';
+import * as dotenv from 'dotenv';
 
-let server: Handler;
+dotenv.config(); // Load environment variables
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,34 +14,12 @@ async function bootstrap() {
     throw new Error('COOKIE_SECRET environment variable is not set');
   }
 
-  // Apply your configurations
-  app.use(cookieParser(cookieSecret));
+  app.use(cookieParser(cookieSecret)); // Add secret key for signed cookies
   app.enableCors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:3000', // Use environment variable for flexibility
+    origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
     credentials: true,
   });
-  app.setGlobalPrefix('api');
-  app.useGlobalPipes(new ValidationPipe());
-
-  await app.init();
-
-  const expressApp = app.getHttpAdapter().getInstance();
-  return serverlessExpress({ app: expressApp });
+  app.setGlobalPrefix('api'); // Set global prefix
+  await app.listen(4000);
 }
-
-export const handler: Handler = async (
-  event: any,
-  context: Context,
-  callback: Callback,
-) => {
-  server = server ?? (await bootstrap());
-  return server(event, context, callback);
-};
-
-// For local development
-if (process.env.NODE_ENV === 'development') {
-  (async () => {
-    await bootstrap();
-    console.log(`Local server running`);
-  })();
-}
+bootstrap();
