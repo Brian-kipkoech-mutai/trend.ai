@@ -10,8 +10,6 @@ import {
 } from "@/components/ui/table";
 
 import CampaignSkeleton from "@/components/campaignSkeleton";
-import { useToast } from "@/hooks/use-toast";
-
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { format } from "date-fns";
@@ -22,7 +20,7 @@ import {
 } from "@/services/campaignServices";
 import { useUser } from "@/contexts/UserContext";
 
-function page() {
+function Page() {
   const context = useUser();
   const role = context?.user?.role;
   const fetchFunction =
@@ -44,10 +42,10 @@ function page() {
         )
       ) : (
         <Table className="">
-          <TableCaption>A list of all  campaigns</TableCaption>
+          <TableCaption>A list of all campaigns</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead >Name</TableHead>
+              <TableHead>Name</TableHead>
               <TableHead>createdAt</TableHead>
               <TableHead>startDate</TableHead>
               <TableHead className="">EndDate</TableHead>
@@ -65,11 +63,12 @@ function page() {
                   "LLL dd, y"
                 );
                 const endDate = format(new Date(campaign.endDate), "LLL dd, y");
-                 const endcodedName = encodeURIComponent(campaign.name);
+                const endcodedName = encodeURIComponent(campaign.name);
                 return (
                   <TableRow key={campaign._id}>
                     <TableCell>
-                      <Link className="md:text-nowrap"
+                      <Link
+                        className="md:text-nowrap"
                         href={`/dashboard/campaign/${campaign._id}/${endcodedName}`}
                       >
                         {campaign.name}
@@ -106,4 +105,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

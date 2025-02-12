@@ -4,6 +4,7 @@ import "./globals.css";
 import Providers from "./provider";
 import { Toaster } from "@/components/ui/toaster";
 import { UserProvider } from "@/contexts/UserContext";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -24,10 +25,17 @@ export default function RootLayout({
     <html lang="en">
       <Providers>
         <body className={`${inter.variable}   font-inter  antialiased`}>
-          <UserProvider>
-            <main>{children}</main>
-          </UserProvider>
-          <Toaster />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <UserProvider>
+              <main>{children}</main>
+            </UserProvider>
+            <Toaster />
+          </ThemeProvider>
         </body>
       </Providers>
     </html>

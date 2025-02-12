@@ -19,7 +19,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 
-function page() {
+function Page() {
   const { isError, isLoading, data } = useQuery({
     queryKey: ["approve submits"],
     queryFn: getAllsubmissions,
@@ -114,4 +114,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

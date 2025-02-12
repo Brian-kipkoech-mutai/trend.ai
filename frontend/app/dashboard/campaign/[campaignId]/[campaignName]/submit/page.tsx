@@ -1,5 +1,4 @@
 "use client";
-
 import { useParams, useRouter } from "next/navigation";
 import React from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -64,16 +63,17 @@ function Page() {
         title: "Empty URL",
         description: "Please enter a URL",
       });
-    isValidUrl(contentLink)
-      ? mutate({
-          campaignId,
-          contentLink: formData.contentLink, // Ensure contentLink is always included
-        })
-      : toast({
-          title: "Invalid URL",
-          description: "Please enter a valid URL",
-          variant: "destructive",
-        });
+    if (isValidUrl(contentLink))
+      mutate({
+        campaignId,
+        contentLink: formData.contentLink, // Ensure contentLink is always included
+      });
+    else
+      toast({
+        title: "Invalid URL",
+        description: "Please enter a valid URL",
+        variant: "destructive",
+      });
     // Pass form data to mutation
   };
 

@@ -10,8 +10,6 @@ import { userLogin } from "@/services/auth-service";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
- 
-
 export function LoginForm({
   className,
   ...props
@@ -23,18 +21,19 @@ export function LoginForm({
   const { toast } = useToast();
   const router = useRouter();
   const { password, email } = formData;
-  const { mutate, isPending, isError } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ["login"],
-    mutationFn: () =>    userLogin({ email, password }),
-    onError: (error: any, variables, context) => {
+    mutationFn: () => userLogin({ email, password }),
+    onError: (error: any) => {
       // An error happened!
       console.log(error.message);
       toast({
         title: error?.response?.data?.message || "Login failed",
         description: "An error occurred while logging in",
+        variant: "destructive",
       });
     },
-    onSuccess: (data, variables, context) => {
+    onSuccess: () => {
       // The mutation was successful!
       toast({
         title: "Login successful",
@@ -72,6 +71,7 @@ export function LoginForm({
             placeholder="m@example.com"
             required
             onChange={handleChange}
+            value={formData?.email || ""}
           />
         </div>
         <div className="grid gap-2">
@@ -90,10 +90,11 @@ export function LoginForm({
             type="password"
             onChange={handleChange}
             required
+            value={formData?.password || ""}
           />
         </div>
-        <Button type="submit" className="w-full">
-          Login
+        <Button type="submit" className="w-full" disabled={isPending}>
+          {isPending ? "Loging in" : " Login"}
         </Button>
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
           <span className="relative z-10 bg-background px-2 text-muted-foreground">

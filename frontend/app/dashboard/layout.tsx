@@ -24,8 +24,10 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const isLoading = userContext?.isLoading;
   const error = userContext?.error;
   useEffect(() => {
-    error && router.push("signup");
-  }, [error]);
+    if (error) {
+      router.replace("/signup");
+    }
+  }, [error, router]);
   if (isLoading) {
     return (
       <div

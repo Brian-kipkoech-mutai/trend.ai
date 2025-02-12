@@ -23,7 +23,7 @@ export function SignUpForm({
   const { handleChange, formData, setFormData } = useFormData();
   const { toast } = useToast();
   const router = useRouter();
-  const { mutate, isPending, isError } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ["registerUser"],
     mutationFn: () => registerUser(formData),
 
@@ -34,19 +34,28 @@ export function SignUpForm({
       });
       router.push("/dashboard");
     },
-    async onError(error:any) {
+    async onError(error: any) {
       console.error("Error creating account:", error);
-      const errorMessage = (error.response?.data?.message || "An error occurred while creating your account");
+      const errorMessage =
+        error.response?.data?.message ||
+        "An error occurred while creating your account";
       toast({
         title: "Account creation failed",
         description: errorMessage,
+        variant: "destructive",
       });
     },
   });
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission logic here
-    console.log(formData);
+    if (!formData.role) {
+      toast({
+        title: "Make sure to choose your role",
+        variant: "destructive",
+      });
+      return;
+    }
     mutate();
   };
   const handleValueChange = (value: string) => {
@@ -77,6 +86,7 @@ export function SignUpForm({
             type="text"
             placeholder="name"
             required
+            value={formData?.name || ""}
             onChange={handleChange}
           />
         </div>
@@ -88,6 +98,7 @@ export function SignUpForm({
             type="email"
             placeholder="m@example.com"
             required
+            value={formData?.email || ""}
             onChange={handleChange}
           />
         </div>
@@ -98,6 +109,7 @@ export function SignUpForm({
             name="password"
             type="password"
             required
+            value={formData?.password || ""}
             onChange={handleChange}
           />
         </div>
@@ -112,8 +124,8 @@ export function SignUpForm({
             </SelectContent>
           </Select>
         </div>
-        <Button type="submit" className="w-full">
-          Sign Up
+        <Button type="submit" className="w-full" disabled={isPending}>
+          {isPending ? "Signing up" : "Sign Up"}
         </Button>
         <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
           <span className="relative z-10 bg-background px-2 text-muted-foreground">

@@ -18,7 +18,7 @@ import { useUser } from "@/contexts/UserContext";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-const page = () => {
+const Page = () => {
     const { campaignId ,campaignName} = useParams();
     const context = useUser();
     const userRole= context?.user?.role;
@@ -69,4 +69,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

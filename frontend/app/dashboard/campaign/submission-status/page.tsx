@@ -1,7 +1,7 @@
 "use client";
 
 import CampaignSkeleton from "@/components/campaignSkeleton";
-import { useToast } from "@/hooks/use-toast";
+
 import { getAllUserSubmission } from "@/services/submissionServices";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
@@ -17,8 +17,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 
-function page() {
-  const { toast } = useToast();
+function Page() {
   const { isLoading, data, isError } = useQuery({
     queryKey: ["campaigns_status"],
     queryFn: getAllUserSubmission,
@@ -72,4 +71,4 @@ function page() {
   }
 }
 
-export default page;
+export default Page;

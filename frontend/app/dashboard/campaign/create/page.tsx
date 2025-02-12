@@ -4,7 +4,7 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
+ 
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -84,6 +84,8 @@ const CreateCampaignPage: React.FC = () => {
                 name="description"
                 onChange={handleChange}
                 required={true}
+                className="min-h-48"
+                
               />
             </div>
 

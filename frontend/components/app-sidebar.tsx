@@ -2,10 +2,6 @@
 
 import * as React from "react";
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
   Frame,
   GalleryVerticalEnd,
   Map,
@@ -27,6 +23,7 @@ import {
 import { useUser } from "@/contexts/UserContext";
 
 import { NavOragnization } from "./nav-organization";
+import { ModeToggle } from "./mode-toggle";
 
 // This is sample data.
 const data = {
@@ -133,7 +130,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           items={role == "brand" ? data.navMainbrand : data.navMainInfluencer}
         />
       </SidebarContent>
-      <SidebarFooter>{user && <NavUser user={user} />}</SidebarFooter>
+      <SidebarFooter>
+        {" "}
+        <ModeToggle />
+        {user && <NavUser user={user} />}
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );
