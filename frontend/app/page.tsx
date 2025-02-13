@@ -11,17 +11,58 @@ import { useUser } from "@/contexts/UserContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Hero() {
   const { resolvedTheme } = useTheme();
   const userContext = useUser();
   const router = useRouter();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (userContext?.user?.name) {
       router.push("/dashboard");
     }
   }, [userContext, router]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      toast({
+        title: "Application Performance Notice",
+        description: (
+          <p className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-800 mb-5 text-base">
+            🚀{" "}
+            <strong className="font-semibold">
+              Application Performance Notice
+            </strong>{" "}
+            The backend of this application is hosted on Render's free tier. Due
+            to the free tier's limitations, the backend may spin down after
+            periods of inactivity. When this happens, the first request after
+            inactivity may take{" "}
+            <strong className="font-semibold">up to 50 seconds or more</strong>{" "}
+            to complete as the backend spins back up. I appreciate your patience
+            and understanding! If you have any questions or concerns, please
+            feel free to reach out to me at{" "}
+            <Link
+              href="mailto:kbrianmutai@gmail.com"
+              className="hover:text-blue-400 underline underline-offset-2 mx-1"
+            >
+              kbrianmutai@gmail.com
+            </Link>{" "}
+            or{" "}
+            <Link
+              href="tel:+254769694566"
+              className="hover:text-blue-400 underline underline-offset-2 mx-1"
+            >
+              +254769694566
+            </Link>
+            Thank you for using my application! 🙏
+          </p>
+        ),
+      });
+    }, 2000);
+  }, []);
+
   let src = "";
 
   switch (resolvedTheme) {
@@ -59,12 +100,7 @@ export default function Hero() {
           </p>
           <div className=" flex animate-appear justify-center gap-4 delay-300">
             <div className=" flex justify-center gap-4 delay-300">
-              <Button
-                
-                className=" w-60 text-lg  uppercase"
-                size="lg"
-                asChild
-              >
+              <Button className=" w-60 text-lg  uppercase" size="lg" asChild>
                 <Link href="/signup">Get Started</Link>
               </Button>
             </div>
