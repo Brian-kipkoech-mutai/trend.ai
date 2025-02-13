@@ -21,13 +21,13 @@ export function LoginForm({
   const { toast } = useToast();
   const router = useRouter();
   const { password, email } = formData;
-  const { invalidateQueries } = useQueryClient();
+ const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationKey: ["login"],
     mutationFn: () => userLogin({ email, password }),
     onError: (error: any) => {
       // An error happened!
-
+      console.log("error", error);
       toast({
         title: error?.response?.data?.message || "Login failed",
         description: "An error occurred while logging in",
@@ -36,11 +36,12 @@ export function LoginForm({
     },
     onSuccess: () => {
       // The mutation was successful!
+      queryClient.invalidateQueries({ queryKey: ["user"] });
       toast({
         title: "Login successful",
         description: "You have successfully logged in",
       });
-      invalidateQueries({ queryKey: ["user"] });
+
       router.replace("/dashboard");
     },
   });

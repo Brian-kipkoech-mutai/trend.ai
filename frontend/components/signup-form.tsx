@@ -23,7 +23,7 @@ export function SignUpForm({
   const { handleChange, formData, setFormData } = useFormData();
   const { toast } = useToast();
   const router = useRouter();
-  const { invalidateQueries } = useQueryClient();
+  const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationKey: ["registerUser"],
     mutationFn: () => registerUser(formData),
@@ -33,7 +33,8 @@ export function SignUpForm({
         title: "Account created successfully",
         description: "You can now login to your account",
       });
-      invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+
       router.push("/dashboard");
     },
     async onError(error: any) {
