@@ -1,101 +1,89 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ArrowRightIcon } from "lucide-react";
+
 import Image from "next/image";
+import { useTheme } from "next-themes";
+import { useEffect } from "react";
+import { useUser } from "@/contexts/UserContext";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Card, CardContent } from "@/components/ui/card";
 
-export default function Home() {
+export default function Hero() {
+  const { resolvedTheme } = useTheme();
+  const userContext = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (userContext?.user?.name) {
+      router.push("/dashboard");
+    }
+  }, [userContext, router]);
+  let src = "";
+
+  switch (resolvedTheme) {
+    case "light":
+      src =
+        "https://cdn.dribbble.com/userupload/5341843/file/original-cd42d04d790992de3e32f24e526384ad.png?resize=1600x1200&vertical=center";
+      break;
+    case "dark":
+      src =
+        "https://cdn.dribbble.com/userupload/5341843/file/original-cd42d04d790992de3e32f24e526384ad.png?resize=1600x1200&vertical=center";
+    default:
+      src =
+        "https://cdn.dribbble.com/userupload/5341843/file/original-cd42d04d790992de3e32f24e526384ad.png?resize=1600x1200&vertical=center";
+      break;
+  }
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <section className="fade-bottom overflow-hidden pb-0 sm:pb-0 md:pb-0">
+      <div className="mx-auto flex max-w-container flex-col gap-12 pt-16 sm:gap-24">
+        <div className="flex flex-col items-center gap-6 text-center sm:gap-12">
+          <Badge variant="outline" className="animate-appear space-x-2">
+            <span className="text-muted-foreground">trendai</span>
+            <Link href="/signup" className="flex items-center gap-1">
+              Get started
+              <ArrowRightIcon className="h-3 w-3 " />
+            </Link>
+          </Badge>
+          <h1 className="relative z-10 inline-block animate-appear bg-gradient-to-r from-foreground to-foreground bg-clip-text text-4xl font-semibold leading-tight text-transparent drop-shadow-2xl sm:text-6xl sm:leading-tight md:text-8xl md:leading-tight dark:to-muted-foreground">
+            Transform the Way You Connect with Influencers
+          </h1>
+          <p className="text-md relative z-10 max-w-[550px] animate-appear font-medium text-muted-foreground sm:text-xl">
+            Streamline your campaign management and influencer collaboration
+            with our easy-to-use platform. From campaign creation to content
+            approval, we’ve got you covered
+          </p>
+          <div className=" flex animate-appear justify-center gap-4 delay-300">
+            <div className=" flex justify-center gap-4 delay-300">
+              <Button
+                
+                className=" w-60 text-lg  uppercase"
+                size="lg"
+                asChild
+              >
+                <Link href="/signup">Get Started</Link>
+              </Button>
+            </div>
+          </div>
+          <div className="relative pt-12">
+            <Card className="animate-appear delay-700">
+              <CardContent>
+                <Image
+                  src={src}
+                  alt="trendai UI app screenshot"
+                  width={1248}
+                  height={765}
+                  className="rounded-sm"
+                />
+              </CardContent>
+            </Card>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+    </section>
   );
 }

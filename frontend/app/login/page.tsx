@@ -12,7 +12,7 @@ export default function LoginPage() {
             <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
               <GalleryVerticalEnd className="size-4" />
             </div>
-            Acme Inc.
+            trendai
           </a>
         </div>
         <div className="flex flex-1 items-center justify-center">
@@ -26,7 +26,7 @@ export default function LoginPage() {
           src="https://www.trendai.app/assets/images/impact7.png"
           alt="Image"
           fill
-          className="object-cover dark:brightness-[0.2] dark:grayscale"
+          className="object-cover  "
           sizes="(max-width: 768px) 0px, 50vw"
         />
       </div>

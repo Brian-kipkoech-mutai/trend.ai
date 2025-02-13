@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useFormData from "@/hooks/useFormData";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { userLogin } from "@/services/auth-service";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
@@ -21,12 +21,13 @@ export function LoginForm({
   const { toast } = useToast();
   const router = useRouter();
   const { password, email } = formData;
+  const { invalidateQueries } = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationKey: ["login"],
     mutationFn: () => userLogin({ email, password }),
     onError: (error: any) => {
       // An error happened!
-      console.log(error.message);
+
       toast({
         title: error?.response?.data?.message || "Login failed",
         description: "An error occurred while logging in",
@@ -39,6 +40,7 @@ export function LoginForm({
         title: "Login successful",
         description: "You have successfully logged in",
       });
+      invalidateQueries({ queryKey: ["user"] });
       router.replace("/dashboard");
     },
   });

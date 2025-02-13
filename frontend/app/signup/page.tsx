@@ -26,7 +26,7 @@ export default function LoginPage() {
           src="https://www.trendai.app/assets/images/2.svg"
           alt="Image"
           fill
-          className="object-cover dark:brightness-[0.2] dark:grayscale "
+          className="object-cover   "
           sizes="(max-width: 768px) 0px, 50vw"
         />
       </div>

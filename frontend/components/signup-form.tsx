@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useFormData from "@/hooks/useFormData";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { registerUser } from "@/services/auth-service";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -23,6 +23,7 @@ export function SignUpForm({
   const { handleChange, formData, setFormData } = useFormData();
   const { toast } = useToast();
   const router = useRouter();
+  const { invalidateQueries } = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationKey: ["registerUser"],
     mutationFn: () => registerUser(formData),
@@ -32,6 +33,7 @@ export function SignUpForm({
         title: "Account created successfully",
         description: "You can now login to your account",
       });
+      invalidateQueries({ queryKey: ["user"] });
       router.push("/dashboard");
     },
     async onError(error: any) {
