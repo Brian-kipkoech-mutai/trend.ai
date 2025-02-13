@@ -13,7 +13,7 @@ import { RegisterDto } from './dto/register.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Response, Request } from 'express';
 import { LoginDto } from './dto/login.dto';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
+ 
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
@@ -49,7 +49,12 @@ export class AuthController {
     const accessToken = this.jwtService.sign(payload);
 
     // Set the access token as a signed cookie
-    res.cookie('accessToken', accessToken, { httpOnly: true, signed: true });
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      signed: true,
+      secure: true,
+      sameSite: 'none',
+    });
     res.status(200).json({ message: 'Registration successful' });
 
     // User is automatically logged in after registration
@@ -91,7 +96,12 @@ export class AuthController {
     const accessToken = this.jwtService.sign(payload);
 
     // Set the access token as a signed cookie
-    res.cookie('accessToken', accessToken, { httpOnly: true, signed: true });
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      signed: true,
+      secure: true,
+      sameSite: 'none',
+    });
     res.send();
   }
 
