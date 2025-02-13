@@ -25,7 +25,6 @@ export class AuthService {
         password,
         name,
         role,
-        socialMediaHandle: 'y@brezi',
       });
       const influencer = await newInfluencer.save();
       return influencer.id;
